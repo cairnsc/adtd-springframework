@@ -1,14 +1,16 @@
 package com.thoughtworks.adtd.springframework;
 
 import com.google.common.collect.Multimap;
-import com.thoughtworks.adtd.http.Request;
-import com.thoughtworks.adtd.http.Response;
-import com.thoughtworks.adtd.http.WebProxy;
+import com.thoughtworks.adtd.http.*;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.Assert;
+
+import java.util.Collection;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -58,7 +60,9 @@ public class SpringTestWebProxy implements WebProxy {
     }
 
     private MockHttpServletRequestBuilder getRequestBuilder(Request adtdRequest) {
+        Assert.notNull(adtdRequest.getMethod(), "Request method must be set");
         String method = adtdRequest.getMethod().toUpperCase();
+        Assert.notNull(adtdRequest.getUri(), "Request URI must be set");
         String uri = adtdRequest.getUri();
         MockHttpServletRequestBuilder builder;
 
@@ -84,20 +88,17 @@ public class SpringTestWebProxy implements WebProxy {
     }
 
     private void setParams(MockHttpServletRequestBuilder requestBuilder, Request adtdRequest) {
-        Multimap<String, String> params = adtdRequest.getParams();
-        for (String param : params.keySet()) {
-            for (String value : params.get(param)) {
-                requestBuilder.param(param, value);
-            }
+        Collection<RequestParameter> params = adtdRequest.getParams().getParams().values();
+        for (RequestParameter param  : params) {
+            List<String> values = param.getValues();
+            requestBuilder.param(param.getName(), values.toArray(new String[values.size()]));
         }
     }
 
     private void setHeaders(MockHttpServletRequestBuilder requestBuilder, Request adtdRequest) {
-        Multimap<String, String> headers = adtdRequest.getHeaders();
-        for (String header : headers.keySet()) {
-            for (String value : headers.get(header)) {
-                requestBuilder.header(header, value);
-            }
+        Collection<Header> headers = adtdRequest.getHeaders().values();
+        for (Header header : headers) {
+            requestBuilder.header(header.getName(), header.getValue());
         }
     }
 
