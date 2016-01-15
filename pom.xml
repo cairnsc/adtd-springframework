@@ -4,16 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.thoughtworks</groupId>
+    <groupId>com.thoughtworks.adtd</groupId>
     <artifactId>adtd-springframework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
+
+    <name>adtd-springframework</name>
+    <description>adtd adapter for Spring Framework</description>
+    <url>https://github.com/cairnsc/adtd-springframework</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <dependencies>
         <dependency>
-            <groupId>com.thoughtworks</groupId>
+            <groupId>com.thoughtworks.adtd</groupId>
             <artifactId>adtd</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
